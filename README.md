@@ -1,67 +1,51 @@
 # 🗳️ URNA HTML
 
-## Sistema de Votação Eletrônica do Grêmio Estudantil
+## Sistema de Votação Eletrônica
 
-O **URNA HTML** é um sistema de votação eletrônica desenvolvido para auxiliar na realização de eleições do Grêmio Estudantil da **Escola Professor Vicente Peixoto**.
+O **URNA HTML** é um sistema de votação eletrônica desenvolvido utilizando **HTML5, CSS3 e JavaScript**.
 
-O projeto foi desenvolvido utilizando **HTML5, CSS3 e JavaScript**, com o objetivo de criar uma experiência semelhante à utilização de uma urna eletrônica, permitindo que os estudantes realizem seus votos por meio de uma interface simples, organizada e intuitiva.
+O projeto foi criado com o objetivo de oferecer uma interface simples e intuitiva para realização de votações, contando com uma urna eletrônica, painel administrativo, registro de votos e sistema de apuração.
 
-O sistema funciona localmente no computador e utiliza o **LocalStorage do navegador** para armazenar as informações das chapas e os votos registrados.
+O sistema foi desenvolvido para funcionar localmente, utilizando o armazenamento do próprio navegador para registrar os dados da votação.
 
 ---
 
 # 📌 Sobre o projeto
 
-O projeto foi criado para ser utilizado em uma eleição escolar do Grêmio Estudantil.
+O URNA HTML possui duas áreas principais:
 
-A proposta é disponibilizar uma solução eletrônica capaz de organizar o processo de votação sem depender de um servidor externo, banco de dados online ou conexão permanente com a internet.
+### 🗳️ Urna
 
-O sistema é dividido principalmente em duas partes:
+Interface utilizada para realizar a votação.
 
-### 🗳️ Urna de votação
-
-Interface utilizada pelos estudantes para realizar seus votos.
+A urna permite inserir o número de uma opção cadastrada, visualizar suas informações e confirmar ou corrigir o voto.
 
 ### ⚙️ Painel Administrativo
 
-Interface utilizada pelos responsáveis pela eleição para cadastrar chapas, acompanhar os resultados e administrar os dados da votação.
+Área destinada ao gerenciamento da votação.
+
+Por meio do painel é possível cadastrar opções, acompanhar a apuração, visualizar os resultados e administrar os dados armazenados pelo sistema.
 
 ---
 
 # 🎯 Objetivos
 
-O projeto possui como principais objetivos:
+O projeto tem como objetivos:
 
-- Criar uma urna eletrônica para uma eleição escolar;
-- Facilitar o processo de votação dos estudantes;
-- Permitir o cadastro das chapas participantes;
-- Exibir informações das chapas durante a votação;
-- Registrar votos válidos;
-- Registrar votos nulos;
-- Registrar votos em branco;
-- Armazenar os dados localmente;
-- Disponibilizar uma área administrativa;
-- Facilitar a apuração dos resultados;
+- Criar uma interface de votação eletrônica;
+- Facilitar o processo de votação;
+- Registrar votos de forma organizada;
+- Permitir votos válidos;
+- Permitir votos nulos;
+- Permitir votos em branco;
+- Apresentar os dados da opção selecionada;
+- Armazenar os votos localmente;
+- Disponibilizar um painel administrativo;
+- Realizar a apuração dos votos;
+- Calcular porcentagens;
 - Permitir a impressão dos resultados;
-- Permitir exportação e importação das chapas;
-- Criar uma experiência semelhante a uma urna eletrônica real;
-- Desenvolver uma aplicação prática utilizando tecnologias web.
-
----
-
-# 🏫 Informações do projeto
-
-**Instituição:** Escola Professor Vicente Peixoto
-
-**Projeto:** Sistema de Votação do Grêmio Estudantil
-
-**Tipo:** Projeto escolar
-
-**Funcionamento:** Local / Offline
-
-**Tecnologias principais:** HTML, CSS e JavaScript
-
-**Armazenamento:** LocalStorage
+- Permitir exportação e importação de dados;
+- Funcionar sem depender de serviços externos.
 
 ---
 
@@ -69,56 +53,55 @@ O projeto possui como principais objetivos:
 
 ## HTML5
 
-Responsável pela estrutura das páginas do sistema, incluindo a urna de votação e o painel administrativo.
+Utilizado para estruturar as páginas e os elementos da aplicação.
 
 ## CSS3
 
-Responsável pela aparência visual, organização dos elementos, cores, botões, teclado numérico, painel e interface da urna.
+Utilizado para criar o layout, aparência da urna, botões, teclado numérico, painel administrativo e demais elementos visuais.
 
 ## JavaScript
 
-Responsável pela lógica do sistema, incluindo:
+Responsável pela lógica e funcionamento do sistema.
 
-- Cadastro das chapas;
-- Busca das chapas;
-- Registro dos votos;
+Entre suas funções estão:
+
+- Registro de votos;
+- Identificação das opções;
 - Votos nulos;
 - Votos em branco;
-- Atualização da tela;
-- Sons da urna;
+- Atualização da interface;
+- Controle dos botões;
+- Reprodução dos sons;
 - Apuração;
 - Gerenciamento administrativo;
-- Importação e exportação;
-- Controle do encerramento da eleição.
+- Importação e exportação de dados;
+- Controle do estado da votação.
 
 ## LocalStorage
 
-O navegador é utilizado para armazenar localmente as informações da eleição.
+Utilizado para armazenar localmente as informações da votação no navegador.
 
 ---
 
 # 🗳️ Funcionamento da urna
 
-Ao abrir a urna, o eleitor encontra uma interface inspirada em uma urna eletrônica.
+A urna possui uma interface inspirada em sistemas de votação eletrônica.
 
-O eleitor deve informar o número correspondente à chapa desejada.
+O usuário deve inserir o número correspondente à opção desejada.
 
-Após a digitação do número, o sistema procura automaticamente a chapa cadastrada.
+Após a digitação, o sistema verifica se o número está cadastrado.
 
-Quando a chapa é encontrada, a urna apresenta informações como:
+Quando encontrado, são exibidas as informações correspondentes na tela.
 
-- Número;
-- Nome;
-- Foto;
-- Situação do voto.
-
-O eleitor pode conferir as informações antes de confirmar.
+O usuário pode conferir os dados antes de confirmar o voto.
 
 ---
 
 # 🔢 Teclado numérico
 
-A urna possui um teclado numérico virtual com os números de:
+A urna possui um teclado numérico virtual para inserção dos números.
+
+Os números disponíveis são:
 
 ```text
 0 1 2 3 4 5 6 7 8 9
