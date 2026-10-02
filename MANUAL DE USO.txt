@@ -1,0 +1,498 @@
+============================================================
+URNA HTML
+MANUAL DE USO E CONFIGURAÇÃO
+============================
+
+Versão do sistema: atual
+
+1. VISÃO GERAL
+   ============================================================
+
+O URNA HTML é um sistema de votação eletrônica que funciona
+localmente no navegador.
+
+O sistema possui duas interfaces:
+
+URNA
+Utilizada para realizar os votos.
+
+PAINEL ADMINISTRATIVO
+Utilizado para cadastrar e gerenciar as opções, acompanhar a
+apuração e administrar os dados da votação.
+
+Os dados são armazenados no navegador através do LocalStorage.
+
+2. ARQUIVOS DO PROJETO
+   ============================================================
+
+Os arquivos principais do sistema são:
+
+Urna.html
+Interface utilizada durante a votação.
+
+Painel Administrativo.html
+Interface utilizada para administrar o sistema e consultar os
+resultados.
+
+app.js
+Controla o funcionamento da urna, os votos e o armazenamento.
+
+style.css
+Controla o visual da urna.
+
+imagens/
+Armazena as imagens utilizadas pelo sistema.
+
+sons/
+Armazena os arquivos de áudio utilizados pela urna.
+
+README.md
+Apresentação e informações gerais do projeto.
+
+MANUAL_DE_USO.txt
+Este manual.
+
+3. PRIMEIRA CONFIGURAÇÃO
+   ============================================================
+
+Antes de utilizar o sistema, abra o:
+
+Painel Administrativo.html
+
+O cadastro das opções deve ser realizado pelo painel.
+
+Para cada opção, informe:
+
+NÚMERO
+Número utilizado para realizar a votação.
+
+NOME
+Nome que será apresentado na urna.
+
+FOTO
+Imagem que será apresentada quando a opção for localizada.
+A foto é opcional.
+
+Depois de cadastrar, confira se todas as informações estão
+corretas.
+
+4. REGRAS PARA O CADASTRO
+   ============================================================
+
+Cada opção deve possuir um número próprio.
+
+Não cadastre duas opções utilizando o mesmo número.
+
+Se uma opção não possuir imagem, o sistema continuará
+funcionando normalmente e mostrará a área de informação da
+foto.
+
+5. COMO FUNCIONA A URNA
+   ============================================================
+
+Abra:
+
+Urna.html
+
+Digite o número utilizando o teclado da urna.
+
+Quando o número corresponder a uma opção cadastrada, serão
+apresentados:
+
+* Número;
+* Nome;
+* Situação;
+* Foto, quando cadastrada.
+
+Depois de conferir os dados, utilize:
+
+CONFIRMA
+Confirma e registra o voto.
+
+CORRIGE
+Apaga a seleção atual.
+
+BRANCO
+Seleciona um voto em branco.
+
+6. VOTO NULO
+   ============================================================
+
+Se o número digitado não estiver cadastrado, a urna mostrará
+que o número não foi encontrado.
+
+Se o usuário pressionar CONFIRMA, o voto será registrado como
+voto nulo.
+
+7. VOTO EM BRANCO
+   ============================================================
+
+Para votar em branco:
+
+1. Pressione BRANCO.
+2. A urna mostrará a situação "VOTO EM BRANCO".
+3. Pressione CONFIRMA.
+
+O voto será contabilizado como voto em branco.
+
+8. CORREÇÃO DA VOTAÇÃO
+   ============================================================
+
+Antes de confirmar, o usuário pode pressionar:
+
+CORRIGE
+
+Isso apaga o número digitado e retorna a urna para uma nova
+votação.
+
+9. PAINEL ADMINISTRATIVO
+   ============================================================
+
+O painel possui duas áreas principais:
+
+APURAÇÃO DOS VOTOS
+
+Exibe os resultados registrados pela urna.
+
+GERENCIAR OPÇÕES
+
+Permite cadastrar, editar e excluir as opções disponíveis para
+votação.
+
+10. APURAÇÃO
+    ============================================================
+
+Na área de apuração são apresentados os resultados registrados.
+
+O painel mostra a quantidade de votos e a porcentagem
+correspondente.
+
+Também são contabilizados:
+
+* Votos em branco;
+* Votos nulos.
+
+O botão:
+
+ATUALIZAR RESULTADOS
+
+recarrega os dados armazenados e atualiza a apuração.
+
+11. IMPRIMIR RESULTADO
+    ============================================================
+
+Depois de conferir a apuração, utilize:
+
+IMPRIMIR RESULTADO
+
+O navegador abrirá a janela de impressão.
+
+É possível escolher uma impressora ou salvar o resultado em
+PDF através das opções de impressão do navegador.
+
+12. EXPORTAR CHAPAS
+    ============================================================
+
+O painel possui a função:
+
+EXPORTAR CHAPAS
+
+Ela gera um arquivo JSON contendo os dados das opções
+cadastradas.
+
+Esse recurso pode ser utilizado para guardar ou transferir
+o cadastro.
+
+Os votos não devem ser considerados parte desse arquivo de
+exportação.
+
+13. IMPORTAR CHAPAS
+    ============================================================
+
+A função:
+
+IMPORTAR CHAPAS
+
+permite carregar um arquivo JSON anteriormente exportado.
+
+Depois da importação, confira o cadastro antes de iniciar uma
+votação.
+
+14. LIMPAR VOTOS
+    ============================================================
+
+A função:
+
+LIMPAR VOTOS
+
+remove os votos armazenados pelo sistema.
+
+Essa função possui proteção por senha.
+
+Utilize somente depois de conferir os resultados e ter certeza
+de que os votos podem ser apagados.
+
+Para uma nova votação, a limpeza pode ser utilizada para
+remover os votos realizados durante os testes.
+
+15. SENHA DO PAINEL
+    ============================================================
+
+A senha utilizada para proteger a função de limpeza dos votos
+fica dentro do arquivo:
+
+Painel Administrativo.html
+
+A senha NÃO fica no:
+
+Urna.html
+app.js
+style.css
+
+16. COMO TROCAR A SENHA
+    ============================================================
+
+Para trocar a senha:
+
+1. Feche o Painel Administrativo.
+
+2. Localize o arquivo:
+
+   Painel Administrativo.html
+
+3. Clique com o botão direito sobre o arquivo.
+
+4. Escolha:
+
+   Abrir com
+
+5. Abra utilizando o Bloco de Notas ou outro editor de código.
+
+6. Com o arquivo aberto, pressione:
+
+   CTRL + F
+
+7. Digite a senha atual na caixa de pesquisa.
+
+8. O editor encontrará a senha dentro do código.
+
+9. Apague somente a senha encontrada.
+
+10. Digite a nova senha exatamente no mesmo lugar.
+
+11. Salve o arquivo utilizando:
+
+    CTRL + S
+
+12. Feche o arquivo.
+
+13. Abra novamente:
+
+    Painel Administrativo.html
+
+A nova senha será utilizada pelo painel.
+
+EXEMPLO:
+
+Se no código estiver:
+
+Peixoto@2026
+
+e você quiser alterar para:
+
+MinhaSenha@2027
+
+substitua somente:
+
+Peixoto@2026
+
+por:
+
+MinhaSenha@2027
+
+ATENÇÃO:
+
+Não apague aspas, parênteses, chaves, pontos e vírgulas ou
+qualquer outro código próximo da senha.
+
+Altere somente o texto da senha.
+
+17. ARMAZENAMENTO
+    ============================================================
+
+O sistema utiliza o LocalStorage do navegador.
+
+As principais chaves utilizadas são:
+
+urnaChapas
+Armazena as opções cadastradas.
+
+urnaVotos
+Armazena os votos.
+
+eleicaoEncerrada
+Armazena o estado de encerramento da votação.
+
+18. IMPORTANTE SOBRE OS DADOS
+    ============================================================
+
+Os dados ficam armazenados no navegador utilizado pelo
+sistema.
+
+Por isso, não limpe os dados do site ou do navegador durante
+uma votação.
+
+Também evite trocar de navegador ou utilizar outro perfil do
+navegador durante o processo.
+
+19. PREPARAÇÃO PARA UMA VOTAÇÃO
+    ============================================================
+
+Antes de iniciar:
+
+1. Cadastre todas as opções.
+
+2. Confira números, nomes e fotos.
+
+3. Faça testes na urna.
+
+4. Teste voto válido.
+
+5. Teste voto nulo.
+
+6. Teste voto em branco.
+
+7. Confira a apuração.
+
+8. Teste a impressão.
+
+9. Depois dos testes, utilize LIMPAR VOTOS.
+
+10. Confira se a votação está zerada.
+
+11. DURANTE A VOTAÇÃO
+    ============================================================
+
+Durante a votação:
+
+* Não altere os arquivos do sistema.
+* Não limpe os dados do navegador.
+* Não utilize LIMPAR VOTOS.
+* Não exclua opções que estejam sendo utilizadas.
+* Não mova as pastas de imagens ou sons.
+
+21. FINALIZAÇÃO DA VOTAÇÃO
+    ============================================================
+
+Depois que a votação terminar:
+
+1. Abra o Painel Administrativo.
+
+2. Atualize os resultados.
+
+3. Confira a quantidade de votos.
+
+4. Confira votos nulos e brancos.
+
+5. Confira as porcentagens.
+
+6. Utilize IMPRIMIR RESULTADO.
+
+7. Guarde o resultado.
+
+8. Faça uma cópia dos arquivos e dados necessários.
+
+9. BACKUP
+   ============================================================
+
+O sistema possui dois tipos diferentes de informações:
+
+ARQUIVOS
+
+São os arquivos físicos do projeto:
+
+HTML
+CSS
+JavaScript
+Imagens
+Sons
+
+DADOS
+
+São as informações armazenadas no LocalStorage:
+
+Opções cadastradas
+Votos
+Estado da eleição
+
+Copiar somente a pasta do projeto não copia automaticamente
+os dados armazenados no navegador.
+
+Por isso, tenha cuidado ao trocar de computador.
+
+23. PROBLEMAS MAIS COMUNS
+    ============================================================
+
+OPÇÃO NÃO APARECE
+
+Confira o cadastro no Painel Administrativo e verifique se o
+número está correto.
+
+FOTO NÃO APARECE
+
+Confira se a imagem está cadastrada corretamente e se o
+arquivo está disponível.
+
+SOM NÃO FUNCIONA
+
+Confira se os arquivos continuam dentro da pasta "sons" e se
+não foram renomeados.
+
+VOTOS NÃO APARECEM
+
+Verifique se a urna e o painel estão sendo executados no
+mesmo navegador e no mesmo perfil.
+
+SENHA NÃO FUNCIONA
+
+Abra o arquivo "Painel Administrativo.html", pesquise pela
+senha utilizando CTRL + F e confira se a alteração foi salva
+corretamente.
+
+24. CHECKLIST FINAL
+    ============================================================
+
+ANTES:
+
+[ ] Opções cadastradas
+[ ] Números conferidos
+[ ] Nomes conferidos
+[ ] Fotos conferidas
+[ ] Urna testada
+[ ] Voto válido testado
+[ ] Voto nulo testado
+[ ] Voto em branco testado
+[ ] Apuração testada
+[ ] Impressão testada
+[ ] Votos de teste removidos
+
+DURANTE:
+
+[ ] Não alterar os arquivos
+[ ] Não limpar os dados do navegador
+[ ] Não limpar os votos
+[ ] Manter o mesmo computador/navegador
+
+DEPOIS:
+
+[ ] Atualizar resultados
+[ ] Conferir votos
+[ ] Conferir nulos
+[ ] Conferir brancos
+[ ] Conferir porcentagens
+[ ] Imprimir resultado
+[ ] Fazer backup
+
+============================================================
+FIM DO MANUAL
+=============

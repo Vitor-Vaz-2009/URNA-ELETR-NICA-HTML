@@ -1,0 +1,2796 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Painel Administrativo - Urna</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f3f5;
+            color: #222;
+        }
+
+        /* =========================
+           CABEÇALHO
+        ========================= */
+
+        header {
+            background: #222;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header img {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            background: white;
+            border-radius: 8px;
+            padding: 5px;
+            display: block;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        header p {
+            margin-top: 5px;
+            color: #ccc;
+        }
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        /* =========================
+           ABAS
+        ========================= */
+
+        .abas {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .aba {
+            border: none;
+            padding: 13px 20px;
+            background: #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .aba.ativa {
+            background: #222;
+            color: white;
+        }
+
+        .secao {
+            display: none;
+        }
+
+        .secao.ativa {
+            display: block;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .card strong {
+            font-size: 30px;
+        }
+
+        /* =========================
+           PAINÉIS
+        ========================= */
+
+        .painel {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            margin-bottom: 25px;
+        }
+
+        .painel h2 {
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           AÇÕES
+        ========================= */
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 6px;
+            padding: 12px 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-atualizar {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .btn-imprimir {
+            background: #198754;
+            color: white;
+        }
+
+        .btn-exportar {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .btn-importar {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .btn-limpar {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-sair {
+            background: #343a40;
+            color: white;
+        }
+
+        /* =========================
+           RESULTADO
+        ========================= */
+
+        .resultado {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .resultado-cabecalho,
+        .resultado-linha {
+            display: grid;
+
+            /*
+                POSIÇÃO | FOTO | CHAPA | VOTOS | PORCENTAGEM
+            */
+
+            grid-template-columns:
+                65px
+                90px
+                1fr
+                120px
+                150px;
+
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+        }
+
+        .resultado-cabecalho {
+            background: #222;
+            color: white;
+            font-weight: bold;
+        }
+
+        .resultado-linha {
+            border-top: 1px solid #ddd;
+            min-height: 100px;
+        }
+
+        .resultado-linha:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .posicao {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* =========================
+           FOTO DO RESULTADO
+        ========================= */
+
+        .foto-resultado {
+            width: 70px;
+            height: 70px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .foto-resultado img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .sem-foto {
+            font-size: 10px;
+            color: #777;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .nome-chapa {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .numero-chapa {
+            color: #666;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .votos {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .porcentagem {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .barra-area {
+            margin-top: 7px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .barra {
+            height: 100%;
+            background: #198754;
+        }
+
+        .sem-votos {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        /* =========================
+           FORMULÁRIO
+        ========================= */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .formulario input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .formulario input[type="file"] {
+            padding: 7px;
+        }
+
+        .formulario button {
+            grid-column: 2;
+            width: fit-content;
+        }
+
+        /* =========================
+           CHAPAS CADASTRADAS
+        ========================= */
+
+        .lista-chapas {
+            margin-top: 25px;
+        }
+
+        .chapa-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border: 1px solid #ddd;
+            padding: 15px;
+
+            border-radius: 8px;
+            margin-bottom: 12px;
+
+            background: #fff;
+
+            gap: 20px;
+        }
+
+        /* NOVO: área da foto + informações */
+
+        .chapa-admin-esquerda {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .chapa-admin-foto {
+            width: 85px;
+            height: 85px;
+
+            flex-shrink: 0;
+
+            border: 1px solid #bbb;
+            border-radius: 8px;
+
+            background: #f8f9fa;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+        .chapa-admin-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .chapa-admin-sem-foto {
+            color: #777;
+            font-size: 11px;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .chapa-admin-info {
+            min-width: 0;
+        }
+
+        .chapa-admin-numero {
+            display: inline-block;
+
+            background: #222;
+            color: white;
+
+            padding: 5px 10px;
+
+            border-radius: 5px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        .chapa-admin-info strong {
+            display: block;
+
+            font-size: 20px;
+
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .chapa-admin-info small {
+            display: block;
+
+            color: #777;
+
+            margin-top: 6px;
+
+            font-size: 14px;
+        }
+
+        .chapa-admin-acoes {
+            display: flex;
+            gap: 8px;
+
+            flex-shrink: 0;
+        }
+
+        .btn-editar {
+            background: #ffc107;
+            color: #111;
+        }
+
+        .btn-excluir {
+            background: #dc3545;
+            color: white;
+        }
+
+        .mensagem-vazia {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        /* =========================
+           RODAPÉ
+        ========================= */
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        /* =========================
+           IMPRESSÃO
+        ========================= */
+
+        @media print {
+
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+
+            body {
+                background: white;
+            }
+
+            header {
+                background: white !important;
+                color: black !important;
+                border-bottom: 2px solid #222;
+                padding: 10px 0;
+            }
+
+            header img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .abas,
+            .acoes,
+            #gerenciar,
+            footer {
+                display: none !important;
+            }
+
+            .container {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .secao {
+                display: none !important;
+            }
+
+            #apuracao {
+                display: block !important;
+            }
+
+            .cards {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                margin-bottom: 15px;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                padding: 10px;
+            }
+
+            .card strong {
+                font-size: 22px;
+            }
+
+            .painel {
+                box-shadow: none;
+                padding: 10px 0;
+            }
+
+            .resultado-cabecalho,
+            .resultado-linha {
+                grid-template-columns:
+                    45px
+                    60px
+                    1fr
+                    70px
+                    90px;
+
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .resultado-linha {
+                min-height: 70px;
+            }
+
+            .foto-resultado {
+                width: 50px;
+                height: 50px;
+            }
+
+            .nome-chapa {
+                font-size: 14px;
+            }
+
+            .numero-chapa {
+                font-size: 11px;
+            }
+
+            .posicao {
+                font-size: 17px;
+            }
+
+            .votos,
+            .porcentagem {
+                font-size: 13px;
+            }
+
+            .barra-area {
+                display: none;
+            }
+        }
+
+        /* =========================
+           TELAS MENORES
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .resultado-cabecalho,
+            .resultado-linha {
+                grid-template-columns:
+                    45px
+                    60px
+                    1fr
+                    70px
+                    90px;
+
+                gap: 8px;
+                font-size: 13px;
+            }
+
+            .foto-resultado {
+                width: 50px;
+                height: 50px;
+            }
+
+            .nome-chapa {
+                font-size: 14px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .formulario button {
+                grid-column: 1;
+            }
+
+            .chapa-admin {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .chapa-admin-esquerda {
+                width: 100%;
+            }
+
+            .chapa-admin-acoes {
+                width: 100%;
+            }
+
+            .chapa-admin-acoes .btn {
+                flex: 1;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <img
+        src="imagens/logo-gremio.png"
+        alt="Logo do Grêmio"
+    >
+
+    <div>
+        <h1>PAINEL ADMINISTRATIVO</h1>
+        <p>ESCOLA PROFESSOR VICENTE PEIXOTO</p>
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <div class="abas">
+
+        <button
+            class="aba ativa"
+            onclick="mostrarAba('apuracao', this)"
+        >
+            APURAÇÃO DOS VOTOS
+        </button>
+
+        <button
+            class="aba"
+            onclick="mostrarAba('gerenciar', this)"
+        >
+            GERENCIAR CHAPAS
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         APURAÇÃO
+    ========================== -->
+
+    <section
+        id="apuracao"
+        class="secao ativa"
+    >
+
+        <div class="acoes">
+
+            <button
+                class="btn btn-atualizar"
+                onclick="carregarApuracao()"
+            >
+                ATUALIZAR RESULTADOS
+            </button>
+
+            <button
+                class="btn btn-imprimir"
+                onclick="imprimirResultado()"
+            >
+                IMPRIMIR RESULTADO
+            </button>
+
+            <button
+                class="btn btn-exportar"
+                onclick="exportarChapas()"
+            >
+                EXPORTAR CHAPAS
+            </button>
+
+            <button
+                class="btn btn-importar"
+                onclick="abrirImportacao()"
+            >
+                IMPORTAR CHAPAS
+            </button>
+
+            <input
+                type="file"
+                id="arquivo-importacao"
+                accept=".json,application/json"
+                style="display: none;"
+                onchange="importarChapas(event)"
+            >
+
+            <button
+                class="btn btn-limpar"
+                onclick="limparVotos()"
+            >
+                LIMPAR VOTOS
+            </button>
+
+            <button
+                class="btn btn-sair"
+                onclick="sairPainel()"
+            >
+                SAIR DO PAINEL
+            </button>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>TOTAL DE VOTOS</h3>
+                <strong id="total-votos">0</strong>
+            </div>
+
+            <div class="card">
+                <h3>VOTOS VÁLIDOS</h3>
+                <strong id="votos-validos">0</strong>
+            </div>
+
+            <div class="card">
+                <h3>VOTOS BRANCOS</h3>
+                <strong id="votos-brancos">0</strong>
+            </div>
+
+            <div class="card">
+                <h3>VOTOS NULOS</h3>
+                <strong id="votos-nulos">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="painel">
+
+            <h2>
+                RESULTADO DA ELEIÇÃO
+            </h2>
+
+            <div class="resultado">
+
+                <div class="resultado-cabecalho">
+
+                    <div>POS.</div>
+                    <div>FOTO</div>
+                    <div>CHAPA</div>
+                    <div>VOTOS</div>
+                    <div>PORCENTAGEM</div>
+
+                </div>
+
+                <div id="lista-resultados"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="painel">
+
+            <h2>
+                VOTOS BRANCOS E NULOS
+            </h2>
+
+            <div class="resultado">
+
+                <div class="resultado-linha">
+
+                    <div></div>
+                    <div></div>
+
+                    <div>
+                        <div class="nome-chapa">
+                            VOTOS EM BRANCO
+                        </div>
+                    </div>
+
+                    <div
+                        class="votos"
+                        id="brancos-detalhe"
+                    >
+                        0
+                    </div>
+
+                    <div
+                        class="porcentagem"
+                        id="brancos-percentual"
+                    >
+                        0,00%
+                    </div>
+
+                </div>
+
+
+                <div class="resultado-linha">
+
+                    <div></div>
+                    <div></div>
+
+                    <div>
+                        <div class="nome-chapa">
+                            VOTOS NULOS
+                        </div>
+                    </div>
+
+                    <div
+                        class="votos"
+                        id="nulos-detalhe"
+                    >
+                        0
+                    </div>
+
+                    <div
+                        class="porcentagem"
+                        id="nulos-percentual"
+                    >
+                        0,00%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         GERENCIAR CHAPAS
+    ========================== -->
+
+    <section
+        id="gerenciar"
+        class="secao"
+    >
+
+        <div class="painel">
+
+            <h2 id="titulo-formulario">
+                CADASTRAR CHAPA
+            </h2>
+
+            <form
+                id="form-chapa"
+                class="formulario"
+                onsubmit="salvarChapa(event)"
+            >
+
+                <label for="numero">
+                    Número:
+                </label>
+
+                <input
+                    type="number"
+                    id="numero"
+                    min="0"
+                    max="99"
+                    required
+                >
+
+
+                <label for="nome">
+                    Nome da chapa:
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    required
+                >
+
+
+                <label for="foto">
+                    Foto/logo:
+                </label>
+
+                <input
+                    type="file"
+                    id="foto"
+                    accept="image/*"
+                >
+
+
+                <button
+                    type="submit"
+                    class="btn btn-atualizar"
+                >
+                    SALVAR CHAPA
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="painel">
+
+            <h2>
+                CHAPAS CADASTRADAS
+            </h2>
+
+            <div id="lista-chapas"></div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<footer>
+    Sistema de votação escolar — Painel Administrativo
+</footer>
+
+
+<script>
+
+    const CHAPAS_STORAGE = "urnaChapas";
+    const VOTOS_STORAGE = "urnaVotos";
+
+    const SENHA_LIMPAR_VOTOS = "Peixoto@2026";
+
+    let chapaEditando = null;
+
+
+    // ==========================================
+    // CHAPAS
+    // ==========================================
+
+    function obterChapas() {
+
+        try {
+
+            const dados =
+                localStorage.getItem(
+                    CHAPAS_STORAGE
+                );
+
+            if (!dados) {
+                return [];
+            }
+
+            const chapas =
+                JSON.parse(dados);
+
+            return Array.isArray(chapas)
+                ? chapas
+                : [];
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar chapas:",
+                erro
+            );
+
+            return [];
+        }
+    }
+
+
+    function salvarChapas(chapas) {
+
+        localStorage.setItem(
+            CHAPAS_STORAGE,
+            JSON.stringify(chapas)
+        );
+
+    }
+
+
+    // ==========================================
+    // VOTOS
+    // ==========================================
+
+    function obterVotos() {
+
+        try {
+
+            const dados =
+                localStorage.getItem(
+                    VOTOS_STORAGE
+                );
+
+            if (!dados) {
+
+                return {
+                    brancos: 0,
+                    nulos: 0
+                };
+
+            }
+
+            const votos =
+                JSON.parse(dados);
+
+            if (
+                !votos ||
+                typeof votos !== "object"
+            ) {
+
+                return {
+                    brancos: 0,
+                    nulos: 0
+                };
+
+            }
+
+            if (
+                votos.brancos === undefined
+            ) {
+                votos.brancos = 0;
+            }
+
+            if (
+                votos.nulos === undefined
+            ) {
+                votos.nulos = 0;
+            }
+
+            return votos;
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar votos:",
+                erro
+            );
+
+            return {
+                brancos: 0,
+                nulos: 0
+            };
+        }
+    }
+
+
+    // ==========================================
+    // APURAÇÃO
+    // ==========================================
+
+    function carregarApuracao() {
+
+        const chapas = obterChapas();
+        const votos = obterVotos();
+
+        let votosValidos = 0;
+
+
+        chapas.forEach(chapa => {
+
+            const quantidade =
+                Number(
+                    votos[chapa.numero]
+                ) || 0;
+
+            votosValidos += quantidade;
+
+        });
+
+
+        const brancos =
+            Number(votos.brancos) || 0;
+
+        const nulos =
+            Number(votos.nulos) || 0;
+
+
+        const totalVotos =
+            votosValidos +
+            brancos +
+            nulos;
+
+
+        document.getElementById(
+            "total-votos"
+        ).textContent =
+            totalVotos;
+
+
+        document.getElementById(
+            "votos-validos"
+        ).textContent =
+            votosValidos;
+
+
+        document.getElementById(
+            "votos-brancos"
+        ).textContent =
+            brancos;
+
+
+        document.getElementById(
+            "votos-nulos"
+        ).textContent =
+            nulos;
+
+
+        const resultados =
+            chapas.map(chapa => {
+
+                return {
+                    ...chapa,
+
+                    votos:
+                        Number(
+                            votos[chapa.numero]
+                        ) || 0
+                };
+
+            });
+
+
+        resultados.sort(
+            (a, b) => {
+
+                if (
+                    b.votos !==
+                    a.votos
+                ) {
+
+                    return (
+                        b.votos -
+                        a.votos
+                    );
+
+                }
+
+                return (
+                    Number(a.numero) -
+                    Number(b.numero)
+                );
+
+            }
+        );
+
+
+        const lista =
+            document.getElementById(
+                "lista-resultados"
+            );
+
+
+        lista.innerHTML = "";
+
+
+        if (
+            resultados.length === 0
+        ) {
+
+            lista.innerHTML = `
+                <div class="sem-votos">
+                    Nenhuma chapa cadastrada.
+                </div>
+            `;
+
+        } else {
+
+            resultados.forEach(
+                (chapa, index) => {
+
+                    let percentual = 0;
+
+
+                    if (
+                        votosValidos > 0
+                    ) {
+
+                        percentual =
+                            (
+                                chapa.votos /
+                                votosValidos
+                            ) * 100;
+
+                    }
+
+
+                    const percentualTexto =
+                        percentual
+                            .toFixed(2)
+                            .replace(
+                                ".",
+                                ","
+                            );
+
+
+                    const posicao =
+                        (index + 1) + "º";
+
+
+                    const fotoHTML =
+                        chapa.foto
+                            ? `
+                                <div class="foto-resultado">
+                                    <img
+                                        src="${escaparHTML(chapa.foto)}"
+                                        alt="Foto da chapa"
+                                    >
+                                </div>
+                              `
+                            : `
+                                <div class="foto-resultado">
+                                    <div class="sem-foto">
+                                        SEM FOTO
+                                    </div>
+                                </div>
+                              `;
+
+
+                    const linha =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    linha.className =
+                        "resultado-linha";
+
+
+                    linha.innerHTML = `
+
+                        <div class="posicao">
+                            ${posicao}
+                        </div>
+
+                        ${fotoHTML}
+
+                        <div>
+
+                            <div class="nome-chapa">
+                                ${escaparHTML(chapa.nome)}
+                            </div>
+
+                            <div class="numero-chapa">
+                                Número
+                                ${escaparHTML(
+                                    String(chapa.numero)
+                                )}
+                            </div>
+
+                            <div class="barra-area">
+
+                                <div
+                                    class="barra"
+                                    style="
+                                        width:
+                                        ${Math.min(
+                                            percentual,
+                                            100
+                                        )}%
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="votos">
+                            ${chapa.votos}
+                        </div>
+
+
+                        <div class="porcentagem">
+                            ${percentualTexto}%
+                        </div>
+
+                    `;
+
+
+                    lista.appendChild(
+                        linha
+                    );
+
+                }
+            );
+
+        }
+
+
+        const percentualBrancos =
+            totalVotos > 0
+                ? (
+                    brancos /
+                    totalVotos
+                ) * 100
+                : 0;
+
+
+        const percentualNulos =
+            totalVotos > 0
+                ? (
+                    nulos /
+                    totalVotos
+                ) * 100
+                : 0;
+
+
+        document.getElementById(
+            "brancos-detalhe"
+        ).textContent =
+            brancos;
+
+
+        document.getElementById(
+            "nulos-detalhe"
+        ).textContent =
+            nulos;
+
+
+        document.getElementById(
+            "brancos-percentual"
+        ).textContent =
+            percentualBrancos
+                .toFixed(2)
+                .replace(
+                    ".",
+                    ","
+                ) + "%";
+
+
+        document.getElementById(
+            "nulos-percentual"
+        ).textContent =
+            percentualNulos
+                .toFixed(2)
+                .replace(
+                    ".",
+                    ","
+                ) + "%";
+
+    }
+
+
+    // ==========================================
+    // ABAS
+    // ==========================================
+
+    function mostrarAba(
+        nome,
+        botao
+    ) {
+
+        document
+            .querySelectorAll(".secao")
+            .forEach(secao => {
+
+                secao.classList.remove(
+                    "ativa"
+                );
+
+            });
+
+
+        document
+            .querySelectorAll(".aba")
+            .forEach(aba => {
+
+                aba.classList.remove(
+                    "ativa"
+                );
+
+            });
+
+
+        document
+            .getElementById(nome)
+            .classList.add(
+                "ativa"
+            );
+
+
+        botao.classList.add(
+            "ativa"
+        );
+
+
+        if (
+            nome === "apuracao"
+        ) {
+
+            carregarApuracao();
+
+        }
+
+
+        if (
+            nome === "gerenciar"
+        ) {
+
+            carregarListaChapas();
+
+        }
+
+    }
+
+
+    // ==========================================
+    // EXPORTAR CHAPAS
+    // ==========================================
+
+    function exportarChapas() {
+
+        const chapas = obterChapas();
+
+
+        if (
+            chapas.length === 0
+        ) {
+
+            alert(
+                "Não existem chapas cadastradas para exportar."
+            );
+
+            return;
+        }
+
+
+        const dadosExportacao = {
+
+            tipo:
+                "backup-chapas-urna",
+
+            versao:
+                1,
+
+            dataExportacao:
+                new Date().toISOString(),
+
+            chapas:
+                chapas
+
+        };
+
+
+        const conteudo =
+            JSON.stringify(
+                dadosExportacao,
+                null,
+                4
+            );
+
+
+        const arquivo =
+            new Blob(
+                [conteudo],
+                {
+                    type:
+                        "application/json"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(
+                arquivo
+            );
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        const data =
+            new Date();
+
+
+        const ano =
+            data.getFullYear();
+
+
+        const mes =
+            String(
+                data.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const dia =
+            String(
+                data.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        link.href = url;
+
+
+        link.download =
+            `chapas-urna-${ano}-${mes}-${dia}.json`;
+
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        document.body.removeChild(
+            link
+        );
+
+
+        URL.revokeObjectURL(
+            url
+        );
+
+
+        alert(
+            "Chapas exportadas com sucesso."
+        );
+
+    }
+
+
+    // ==========================================
+    // ABRIR IMPORTAÇÃO
+    // ==========================================
+
+    function abrirImportacao() {
+
+        const input =
+            document.getElementById(
+                "arquivo-importacao"
+            );
+
+
+        input.value = "";
+
+
+        input.click();
+
+    }
+
+
+    // ==========================================
+    // IMPORTAR CHAPAS
+    // ==========================================
+
+    function importarChapas(event) {
+
+        const arquivo =
+            event.target.files[0];
+
+
+        if (!arquivo) {
+            return;
+        }
+
+
+        const leitor =
+            new FileReader();
+
+
+        leitor.onload =
+            function(e) {
+
+                try {
+
+                    const dados =
+                        JSON.parse(
+                            e.target.result
+                        );
+
+
+                    if (
+                        !dados ||
+                        dados.tipo !==
+                            "backup-chapas-urna"
+                    ) {
+
+                        alert(
+                            "Arquivo inválido. Selecione um arquivo de exportação de chapas da urna."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        !Array.isArray(
+                            dados.chapas
+                        )
+                    ) {
+
+                        alert(
+                            "O arquivo não contém uma lista válida de chapas."
+                        );
+
+                        return;
+                    }
+
+
+                    const chapasImportadas =
+                        dados.chapas;
+
+
+                    for (
+                        const chapa
+                        of chapasImportadas
+                    ) {
+
+                        if (
+                            !chapa ||
+                            chapa.numero === undefined ||
+                            chapa.nome === undefined
+                        ) {
+
+                            alert(
+                                "O arquivo possui uma chapa com informações incompletas."
+                            );
+
+                            return;
+                        }
+
+
+                        const numero =
+                            String(
+                                chapa.numero
+                            ).trim();
+
+
+                        const nome =
+                            String(
+                                chapa.nome
+                            ).trim();
+
+
+                        if (
+                            numero === "" ||
+                            nome === ""
+                        ) {
+
+                            alert(
+                                "O arquivo possui uma chapa sem número ou nome."
+                            );
+
+                            return;
+                        }
+
+
+                        if (
+                            Number.isNaN(
+                                Number(numero)
+                            ) ||
+                            Number(numero) < 0 ||
+                            Number(numero) > 99
+                        ) {
+
+                            alert(
+                                `O número da chapa "${numero}" é inválido.`
+                            );
+
+                            return;
+                        }
+
+                    }
+
+
+                    const numeros =
+                        chapasImportadas.map(
+                            chapa =>
+                                String(
+                                    chapa.numero
+                                )
+                        );
+
+
+                    const numerosUnicos =
+                        new Set(
+                            numeros
+                        );
+
+
+                    if (
+                        numeros.length !==
+                        numerosUnicos.size
+                    ) {
+
+                        alert(
+                            "O arquivo possui duas ou mais chapas com o mesmo número."
+                        );
+
+                        return;
+                    }
+
+
+                    const confirmar =
+                        confirm(
+                            "ATENÇÃO!\n\n" +
+                            "As chapas atualmente cadastradas serão substituídas pelas chapas deste arquivo.\n\n" +
+                            "Os votos NÃO serão importados.\n\n" +
+                            "Deseja continuar?"
+                        );
+
+
+                    if (!confirmar) {
+                        return;
+                    }
+
+
+                    const chapasNovas =
+                        chapasImportadas.map(
+                            chapa => {
+
+                                return {
+
+                                    numero:
+                                        String(
+                                            chapa.numero
+                                        ),
+
+                                    nome:
+                                        String(
+                                            chapa.nome
+                                        ),
+
+                                    foto:
+                                        typeof chapa.foto ===
+                                            "string"
+                                            ? chapa.foto
+                                            : ""
+
+                                };
+
+                            }
+                        );
+
+
+                    salvarChapas(
+                        chapasNovas
+                    );
+
+
+                    const votos =
+                        obterVotos();
+
+
+                    const votosAtualizados = {
+
+                        brancos:
+                            Number(
+                                votos.brancos
+                            ) || 0,
+
+                        nulos:
+                            Number(
+                                votos.nulos
+                            ) || 0
+
+                    };
+
+
+                    chapasNovas.forEach(
+                        chapa => {
+
+                            const numero =
+                                String(
+                                    chapa.numero
+                                );
+
+
+                            votosAtualizados[
+                                numero
+                            ] =
+                                Number(
+                                    votos[
+                                        numero
+                                    ]
+                                ) || 0;
+
+                        }
+                    );
+
+
+                    localStorage.setItem(
+                        VOTOS_STORAGE,
+                        JSON.stringify(
+                            votosAtualizados
+                        )
+                    );
+
+
+                    carregarApuracao();
+                    carregarListaChapas();
+
+
+                    alert(
+                        "Chapas importadas com sucesso."
+                    );
+
+
+                } catch (erro) {
+
+                    console.error(
+                        "Erro ao importar chapas:",
+                        erro
+                    );
+
+
+                    alert(
+                        "Não foi possível importar o arquivo. Verifique se ele é um arquivo JSON válido da urna."
+                    );
+
+                }
+
+            };
+
+
+        leitor.onerror =
+            function() {
+
+                alert(
+                    "Não foi possível ler o arquivo."
+                );
+
+            };
+
+
+        leitor.readAsText(
+            arquivo
+        );
+
+    }
+
+
+    // ==========================================
+    // IMPRIMIR RESULTADO
+    // ==========================================
+
+    function imprimirResultado() {
+
+        carregarApuracao();
+
+        setTimeout(() => {
+
+            window.print();
+
+        }, 100);
+
+    }
+
+
+    // ==========================================
+    // LIMPAR VOTOS
+    // ==========================================
+
+    function limparVotos() {
+
+        const senha =
+            prompt(
+                "Digite a senha para limpar os votos:"
+            );
+
+
+        if (
+            senha === null
+        ) {
+            return;
+        }
+
+
+        if (
+            senha !==
+            SENHA_LIMPAR_VOTOS
+        ) {
+
+            alert(
+                "Senha incorreta. Os votos não foram apagados."
+            );
+
+            return;
+        }
+
+
+        const confirmar =
+            confirm(
+                "ATENÇÃO!\n\n" +
+                "Todos os votos serão apagados.\n" +
+                "As chapas cadastradas NÃO serão apagadas.\n\n" +
+                "Deseja continuar?"
+            );
+
+
+        if (!confirmar) {
+            return;
+        }
+
+
+        const chapas =
+            obterChapas();
+
+
+        const votosZerados = {
+
+            brancos: 0,
+            nulos: 0
+
+        };
+
+
+        chapas.forEach(
+            chapa => {
+
+                votosZerados[
+                    chapa.numero
+                ] = 0;
+
+            }
+        );
+
+
+        localStorage.setItem(
+            VOTOS_STORAGE,
+            JSON.stringify(
+                votosZerados
+            )
+        );
+
+
+        carregarApuracao();
+
+
+        alert(
+            "Votos apagados com sucesso."
+        );
+
+    }
+
+
+    // ==========================================
+    // GERENCIAR CHAPAS
+    // ==========================================
+
+    function salvarChapa(event) {
+
+        event.preventDefault();
+
+
+        const numero =
+            document
+                .getElementById(
+                    "numero"
+                )
+                .value
+                .trim();
+
+
+        const nome =
+            document
+                .getElementById(
+                    "nome"
+                )
+                .value
+                .trim();
+
+
+        const arquivo =
+            document
+                .getElementById(
+                    "foto"
+                )
+                .files[0];
+
+
+        if (
+            !numero ||
+            !nome
+        ) {
+
+            alert(
+                "Preencha o número e o nome da chapa."
+            );
+
+            return;
+        }
+
+
+        const chapas =
+            obterChapas();
+
+
+        const numeroExistente =
+            chapas.find(
+                chapa => {
+
+                    return (
+
+                        String(
+                            chapa.numero
+                        ) ===
+                        String(numero)
+
+                        &&
+
+                        String(
+                            chapa.numero
+                        ) !==
+                        String(
+                            chapaEditando
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (numeroExistente) {
+
+            alert(
+                "Esse número já está cadastrado."
+            );
+
+            return;
+        }
+
+
+        // ======================================
+        // EDITAR CHAPA
+        // ======================================
+
+        if (
+            chapaEditando !== null
+        ) {
+
+            const indice =
+                chapas.findIndex(
+                    chapa =>
+                        String(
+                            chapa.numero
+                        ) ===
+                        String(
+                            chapaEditando
+                        )
+                );
+
+
+            if (
+                indice === -1
+            ) {
+
+                alert(
+                    "Chapa não encontrada."
+                );
+
+                return;
+            }
+
+
+            const votos =
+                obterVotos();
+
+
+            const votosDaChapa =
+                Number(
+                    votos[
+                        chapaEditando
+                    ]
+                ) || 0;
+
+
+            if (
+                String(numero) !==
+                String(chapaEditando)
+                &&
+                votosDaChapa > 0
+            ) {
+
+                alert(
+                    "Não é possível alterar o número de uma chapa que já possui votos."
+                );
+
+                return;
+            }
+
+
+            const chapaAtual =
+                chapas[indice];
+
+
+            fotoParaDataURL(
+                arquivo
+            )
+                .then(
+                    novaFoto => {
+
+                        if (
+                            novaFoto
+                        ) {
+
+                            chapaAtual.foto =
+                                novaFoto;
+
+                        }
+
+
+                        chapaAtual.numero =
+                            numero;
+
+
+                        chapaAtual.nome =
+                            nome;
+
+
+                        if (
+                            String(numero) !==
+                            String(
+                                chapaEditando
+                            )
+                        ) {
+
+                            if (
+                                votos[
+                                    chapaEditando
+                                ] !==
+                                undefined
+                            ) {
+
+                                votos[
+                                    numero
+                                ] =
+                                    votos[
+                                        chapaEditando
+                                    ];
+
+
+                                delete votos[
+                                    chapaEditando
+                                ];
+
+
+                                localStorage.setItem(
+                                    VOTOS_STORAGE,
+                                    JSON.stringify(
+                                        votos
+                                    )
+                                );
+
+                            }
+
+                        }
+
+
+                        salvarChapas(
+                            chapas
+                        );
+
+
+                        cancelarEdicao();
+
+
+                        carregarListaChapas();
+
+
+                        carregarApuracao();
+
+                    }
+                )
+                .catch(
+                    erro => {
+
+                        console.error(
+                            erro
+                        );
+
+                        alert(
+                            "Erro ao salvar a imagem da chapa."
+                        );
+
+                    }
+                );
+
+
+            return;
+        }
+
+
+        // ======================================
+        // NOVA CHAPA
+        // ======================================
+
+        fotoParaDataURL(
+            arquivo
+        )
+            .then(
+                foto => {
+
+                    const novaChapa = {
+
+                        numero:
+                            numero,
+
+                        nome:
+                            nome,
+
+                        foto:
+                            foto || ""
+
+                    };
+
+
+                    chapas.push(
+                        novaChapa
+                    );
+
+
+                    salvarChapas(
+                        chapas
+                    );
+
+
+                    const votos =
+                        obterVotos();
+
+
+                    if (
+                        votos[
+                            numero
+                        ] === undefined
+                    ) {
+
+                        votos[
+                            numero
+                        ] = 0;
+
+                    }
+
+
+                    localStorage.setItem(
+                        VOTOS_STORAGE,
+                        JSON.stringify(
+                            votos
+                        )
+                    );
+
+
+                    document
+                        .getElementById(
+                            "form-chapa"
+                        )
+                        .reset();
+
+
+                    carregarListaChapas();
+
+
+                    carregarApuracao();
+
+
+                    alert(
+                        "Chapa cadastrada com sucesso."
+                    );
+
+                }
+            )
+            .catch(
+                erro => {
+
+                    console.error(
+                        erro
+                    );
+
+                    alert(
+                        "Erro ao cadastrar a chapa."
+                    );
+
+                }
+            );
+
+    }
+
+
+    // ==========================================
+    // LISTA DE CHAPAS
+    // ==========================================
+
+    function carregarListaChapas() {
+
+        const chapas =
+            obterChapas();
+
+
+        const votos =
+            obterVotos();
+
+
+        const lista =
+            document.getElementById(
+                "lista-chapas"
+            );
+
+
+        lista.innerHTML = "";
+
+
+        if (
+            chapas.length === 0
+        ) {
+
+            lista.innerHTML = `
+                <div class="mensagem-vazia">
+                    Nenhuma chapa cadastrada.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        chapas.forEach(
+            chapa => {
+
+                const votosDaChapa =
+                    Number(
+                        votos[
+                            chapa.numero
+                        ]
+                    ) || 0;
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "chapa-admin";
+
+
+                // ======================================
+                // FOTO DA CHAPA
+                // ======================================
+
+                const fotoHTML =
+                    chapa.foto
+                        ? `
+                            <div class="chapa-admin-foto">
+                                <img
+                                    src="${escaparHTML(chapa.foto)}"
+                                    alt="Foto da chapa ${escaparHTML(chapa.nome)}"
+                                >
+                            </div>
+                          `
+                        : `
+                            <div class="chapa-admin-foto">
+                                <div class="chapa-admin-sem-foto">
+                                    SEM FOTO
+                                </div>
+                            </div>
+                          `;
+
+
+                div.innerHTML = `
+
+                    <div class="chapa-admin-esquerda">
+
+                        ${fotoHTML}
+
+                        <div class="chapa-admin-info">
+
+                            <div class="chapa-admin-numero">
+                                Nº ${escaparHTML(
+                                    String(chapa.numero)
+                                )}
+                            </div>
+
+                            <strong>
+                                ${escaparHTML(
+                                    chapa.nome
+                                )}
+                            </strong>
+
+                            <small>
+                                ${votosDaChapa}
+                                voto(s)
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chapa-admin-acoes">
+
+                        <button
+                            class="btn btn-editar"
+                            onclick="editarChapa('${escaparJS(
+                                String(chapa.numero)
+                            )}')"
+                        >
+                            EDITAR
+                        </button>
+
+
+                        <button
+                            class="btn btn-excluir"
+                            onclick="excluirChapa('${escaparJS(
+                                String(chapa.numero)
+                            )}')"
+                        >
+                            EXCLUIR
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                lista.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    // ==========================================
+    // EDITAR CHAPA
+    // ==========================================
+
+    function editarChapa(
+        numero
+    ) {
+
+        const chapas =
+            obterChapas();
+
+
+        const chapa =
+            chapas.find(
+                item =>
+                    String(
+                        item.numero
+                    ) ===
+                    String(
+                        numero
+                    )
+            );
+
+
+        if (!chapa) {
+            return;
+        }
+
+
+        chapaEditando =
+            String(numero);
+
+
+        document.getElementById(
+            "numero"
+        ).value =
+            chapa.numero;
+
+
+        document.getElementById(
+            "nome"
+        ).value =
+            chapa.nome;
+
+
+        document.getElementById(
+            "titulo-formulario"
+        ).textContent =
+            "EDITAR CHAPA";
+
+
+        mostrarAba(
+            "gerenciar",
+            document.querySelectorAll(
+                ".aba"
+            )[1]
+        );
+
+    }
+
+
+    // ==========================================
+    // CANCELAR EDIÇÃO
+    // ==========================================
+
+    function cancelarEdicao() {
+
+        chapaEditando =
+            null;
+
+
+        document
+            .getElementById(
+                "form-chapa"
+            )
+            .reset();
+
+
+        document.getElementById(
+            "titulo-formulario"
+        ).textContent =
+            "CADASTRAR CHAPA";
+
+    }
+
+
+    // ==========================================
+    // EXCLUIR CHAPA
+    // ==========================================
+
+    function excluirChapa(
+        numero
+    ) {
+
+        const chapas =
+            obterChapas();
+
+
+        const votos =
+            obterVotos();
+
+
+        const quantidade =
+            Number(
+                votos[numero]
+            ) || 0;
+
+
+        if (
+            quantidade > 0
+        ) {
+
+            alert(
+                "Essa chapa possui votos e não pode ser excluída."
+            );
+
+            return;
+        }
+
+
+        const confirmar =
+            confirm(
+                "Deseja realmente excluir esta chapa?"
+            );
+
+
+        if (!confirmar) {
+            return;
+        }
+
+
+        const novasChapas =
+            chapas.filter(
+                chapa =>
+                    String(
+                        chapa.numero
+                    ) !==
+                    String(
+                        numero
+                    )
+            );
+
+
+        salvarChapas(
+            novasChapas
+        );
+
+
+        delete votos[
+            numero
+        ];
+
+
+        localStorage.setItem(
+            VOTOS_STORAGE,
+            JSON.stringify(
+                votos
+            )
+        );
+
+
+        carregarListaChapas();
+
+
+        carregarApuracao();
+
+    }
+
+
+    // ==========================================
+    // CONVERTER FOTO
+    // ==========================================
+
+    function fotoParaDataURL(
+        arquivo
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                if (!arquivo) {
+
+                    resolve(null);
+
+                    return;
+                }
+
+
+                const leitor =
+                    new FileReader();
+
+
+                leitor.onload =
+                    function(event) {
+
+                        resolve(
+                            event.target.result
+                        );
+
+                    };
+
+
+                leitor.onerror =
+                    function() {
+
+                        reject(
+                            new Error(
+                                "Erro ao ler imagem."
+                            )
+                        );
+
+                    };
+
+
+                leitor.readAsDataURL(
+                    arquivo
+                );
+
+            }
+        );
+
+    }
+
+
+    // ==========================================
+    // SEGURANÇA DE TEXTO
+    // ==========================================
+
+    function escaparHTML(
+        texto
+    ) {
+
+        return String(texto)
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    function escaparJS(
+        texto
+    ) {
+
+        return String(texto)
+
+            .replace(
+                /\\/g,
+                "\\\\"
+            )
+
+            .replace(
+                /'/g,
+                "\\'"
+            );
+
+    }
+
+
+    // ==========================================
+    // SAIR
+    // ==========================================
+
+    function sairPainel() {
+
+        window.location.href =
+            "Urna.html";
+
+    }
+
+
+    // ==========================================
+    // INICIALIZAÇÃO
+    // ==========================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            carregarApuracao();
+
+            carregarListaChapas();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
